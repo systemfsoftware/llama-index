@@ -68,14 +68,14 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Depend
       throw new Error('not implemented')
     }
 
-    return {
+    return Object.freeze({
       storesText: true,
       embedModel: settings.embedModel,
       client: () => db,
       add,
       delete: _delete,
       query,
-    }
+    })
   }),
 ).pipe(
   Layer.provide(DB.Live),
