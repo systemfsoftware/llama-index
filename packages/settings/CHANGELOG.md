@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_settings
 
+## 0.0.2
+
+### Patch Changes
+
+- a6cab65: chore: make peer dependencies required
+
 ## 0.0.1
 
 ### Patch Changes

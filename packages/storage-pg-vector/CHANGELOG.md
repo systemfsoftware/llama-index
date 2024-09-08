@@ -1,5 +1,15 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.3
+
+### Patch Changes
+
+- 7d86de5: chore: make peer dependencies required
+- Updated dependencies [28d39f0]
+- Updated dependencies [a6cab65]
+  - @systemfsoftware/llama-index_storage@0.0.2
+  - @systemfsoftware/llama-index_settings@0.0.2
+
 ## 0.0.2
 
 ### Patch Changes
