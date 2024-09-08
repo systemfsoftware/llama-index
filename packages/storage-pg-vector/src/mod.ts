@@ -40,7 +40,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
               node_id: embedding.id_,
               text: embedding.getContent(config.metadataMode),
               metadata_: embedding.metadata,
-              embedding: embedding.getEmbedding(),
+              embedding: pgvector.toSql(embedding.getEmbedding()),
             }),
           )
 
