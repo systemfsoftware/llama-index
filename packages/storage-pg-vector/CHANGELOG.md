@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.7
+
+### Patch Changes
+
+- ff6f155: support upserts
+
 ## 0.0.6
 
 ### Patch Changes
