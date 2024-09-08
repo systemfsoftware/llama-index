@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.5
+
+### Patch Changes
+
+- 7704a09: fix: busted type imports
+
 ## 0.0.4
 
 ### Patch Changes
