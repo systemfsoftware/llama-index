@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.2
+
+### Patch Changes
+
+- c5b803c: feat: add config for metamata mode
+
 ## 0.0.1
 
 ### Patch Changes
