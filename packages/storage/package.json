@@ -1,6 +1,6 @@
 {
   "name": "@systemfsoftware/llama-index_storage",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "author": "Ryan Lee <ryanleecode@gmail.com>",
   "repository": {
