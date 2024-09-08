@@ -1,5 +1,5 @@
 import { Settings } from '@systemfsoftware/llama-index-settings'
-import { type IVectorStore, MetadataMode, VectorStore } from '@systemfsoftware/llama-index-storage'
+import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index-storage'
 import { Array, Effect, Exit, Layer, pipe, Runtime } from 'effect'
 import type { Scope } from 'effect/Scope'
 import pg from 'pg'
@@ -15,7 +15,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
   Effect.gen(function*() {
     const runtime = yield* Effect.runtime()
     const settings = yield* Settings
-    const config = yield* PGVectorStoreConfig
+    const config = yield* _PGVectorStoreConfig
     if (config.performSetup) {
       yield* Pool.setupPgVectorExtension
       yield* DB.setupTables
@@ -35,7 +35,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
             embeddingResults,
             (embedding) => ({
               node_id: embedding.id_,
-              text: embedding.getContent(MetadataMode.NONE),
+              text: embedding.getContent(config.metadataMode),
               metadata_: embedding.metadata,
             }),
           )

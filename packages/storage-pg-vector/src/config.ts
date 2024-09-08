@@ -1,4 +1,5 @@
-import { Context, Effect, Layer } from 'effect'
+import { MetadataMode } from '@systemfsoftware/llama-index_storage'
+import { Context, Effect, Layer, Match } from 'effect'
 import pg from 'pg'
 
 export type PoolConfig = pg.PoolConfig
@@ -21,6 +22,10 @@ export type IPGVectorStoreConfig = {
    * @default true
    */
   performSetup?: boolean
+  /**
+   * @default "NONE"
+   */
+  metadataMode?: 'ALL' | 'EMBED' | 'LLM' | 'NONE'
 }
 
 export class PGVectorStoreConfig extends Context.Tag('llama-index_storage-pg-vector/PGVectorStoreConfig')<
@@ -33,7 +38,9 @@ export class PGVectorStoreConfig extends Context.Tag('llama-index_storage-pg-vec
  */
 export class _PGVectorStoreConfig extends Context.Tag('llama-index_storage-pg-vector/_PGVectorStoreConfig')<
   _PGVectorStoreConfig,
-  IPGVectorStoreConfig & Required<Pick<IPGVectorStoreConfig, 'schema' | 'tableName' | 'dimensions'>>
+  & Omit<IPGVectorStoreConfig, 'metadataMode'>
+  & Required<Pick<IPGVectorStoreConfig, 'schema' | 'tableName' | 'dimensions' | 'performSetup'>>
+  & { metadataMode: MetadataMode }
 >() {
   static Live = Layer.effect(
     this,
@@ -46,6 +53,14 @@ export class _PGVectorStoreConfig extends Context.Tag('llama-index_storage-pg-ve
         tableName: config.tableName ?? 'data_llamaindex_embedding',
         dimensions: config.dimensions ?? '1536',
         performSetup: config.performSetup ?? true,
+        metadataMode: Match.value(config.metadataMode).pipe(
+          Match.when('ALL', () => MetadataMode.ALL),
+          Match.when('EMBED', () => MetadataMode.EMBED),
+          Match.when('LLM', () => MetadataMode.LLM),
+          Match.when('NONE', () => MetadataMode.NONE),
+          Match.when(undefined, () => MetadataMode.NONE),
+          Match.exhaustive,
+        ),
       }
     }),
   )
