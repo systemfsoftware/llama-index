@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@systemfsoftware/llama-index_storage-pg-vector": ["./src/mod.ts"]
+    }
+  },
+  "include": ["src", "test"]
+}

@@ -86,10 +86,6 @@ export class DB extends Context.Tag('llama-index_storage-pg-vector/DB')<DB, Kyse
       sql`
         CREATE INDEX IF NOT EXISTS idx_${rawTableName}_node_id 
           ON ${rawSchema}.${rawTableName} (node_id);
-        CREATE INDEX IF NOT EXISTS idx_${rawTableName}_external_id 
-          ON ${rawSchema}.${rawTableName} (external_id);
-        CREATE INDEX IF NOT EXISTS idx_${rawTableName}_collection 
-          ON ${rawSchema}.${rawTableName} (collection);
       `.execute(db)
     )
   })
