@@ -3,6 +3,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "clean": "turbo clean",
     "build": "turbo build",
     "format": "dprint fmt",
     "format:check": "dprint check"
