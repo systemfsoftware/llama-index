@@ -8,7 +8,7 @@ import { _PGVectorStoreConfig, type IPGVectorStoreConfig, PGVectorStoreConfig } 
 import { DB, type NewEmbedding } from './database.js'
 
 export type PoolConfig = pg.PoolConfig
-export { type IPGVectorStoreConfig, PGVectorStoreConfig, Settings }
+export { type IPGVectorStoreConfig, type IVectorStore, PGVectorStoreConfig, Settings, VectorStore }
 
 export namespace PGVectorStore {
   export type Dependencies = PGVectorStoreConfig | Scope
