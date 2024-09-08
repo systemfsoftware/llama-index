@@ -1,7 +1,7 @@
 import { Document } from '@systemfsoftware/llama-index_core/schema'
 import { Settings } from '@systemfsoftware/llama-index_settings'
 import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index_storage'
-import { Array, Effect, Exit, Layer, pipe, Runtime } from 'effect'
+import { Array, Cause, Effect, Exit, Layer, pipe, Runtime } from 'effect'
 import type { Scope } from 'effect/Scope'
 import pg from 'pg'
 import pgvector from 'pgvector/kysely'
@@ -67,7 +67,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Depend
         Runtime.runPromiseExit(runtime),
       ).then(
         Exit.match({
-          onFailure: Promise.reject,
+          onFailure: (c) => Promise.reject(Cause.squash(c)),
           onSuccess: (x) => Promise.resolve(x),
         }),
       )
@@ -116,7 +116,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Depend
         Runtime.runPromiseExit(runtime),
       ).then(
         Exit.match({
-          onFailure: Promise.reject,
+          onFailure: (c) => Promise.reject(Cause.squash(c)),
           onSuccess: (x) => Promise.resolve(x),
         }),
       )
