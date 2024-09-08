@@ -1,5 +1,16 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.8
+
+### Patch Changes
+
+- 55e5d06: fix: throw original error instead of fiber error
+- 33784b0: refactor: nuke settings and core packages
+- c80767a: fix: embeddings insertion
+- 591cd86: fix: creating indices on columns that don't exist
+- Updated dependencies [33784b0]
+  - @systemfsoftware/llama-index_storage@0.0.3
+
 ## 0.0.7
 
 ### Patch Changes

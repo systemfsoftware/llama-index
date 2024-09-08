@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage
 
+## 0.0.3
+
+### Patch Changes
+
+- 33784b0: refactor: nuke settings and core packages
+
 ## 0.0.2
 
 ### Patch Changes
