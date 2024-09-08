@@ -1,8 +1,8 @@
 import { Context, Effect, Layer, pipe } from 'effect'
 import { Kysely, PostgresDialect, sql } from 'kysely'
 import type { Generated, Insertable, Selectable, Updateable } from 'kysely'
+import pg from 'pg'
 import { _PGVectorStoreConfig } from './config.js'
-import { Pool } from './pool.js'
 
 /**
  * @internal
@@ -42,11 +42,11 @@ export class DB extends Context.Tag('llama-index_storage-pg-vector/DB')<DB, Kyse
   static Live = Layer.effect(
     this,
     Effect.gen(function*() {
-      const pool = yield* Pool
+      const config = yield* _PGVectorStoreConfig
 
       const db = yield* Effect.acquireRelease(
         pipe(
-          Effect.sync(() => new PostgresDialect({ pool })),
+          Effect.sync(() => new PostgresDialect({ pool: new pg.Pool(config.poolConfig) })),
           Effect.andThen((dialect) => Effect.sync(() => new Kysely<Database>({ dialect }))),
         ),
         (db) =>
@@ -65,8 +65,8 @@ export class DB extends Context.Tag('llama-index_storage-pg-vector/DB')<DB, Kyse
     const db = yield* DB
     const { schema, tableName, dimensions } = yield* _PGVectorStoreConfig
 
+    yield* Effect.promise(() => sql`CREATE EXTENSION IF NOT EXISTS vector`.execute(db))
     yield* Effect.promise(() => db.schema.createSchema(schema).ifNotExists().execute())
-
     yield* Effect.promise(() =>
       db.schema
         .createTable(`${schema}.${tableName}`)

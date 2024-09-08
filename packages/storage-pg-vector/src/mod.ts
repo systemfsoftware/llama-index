@@ -5,23 +5,25 @@ import type { Scope } from 'effect/Scope'
 import pg from 'pg'
 import { _PGVectorStoreConfig, type IPGVectorStoreConfig, PGVectorStoreConfig } from './config.js'
 import { DB, type NewEmbedding } from './database.js'
-import { Pool } from './pool.js'
 
 export type PoolConfig = pg.PoolConfig
 export { type IPGVectorStoreConfig, PGVectorStoreConfig, Settings }
 
-export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig | Settings | Scope> = Layer.effect(
+export namespace PGVectorStore {
+  export type Dependencies = PGVectorStoreConfig | Settings | Scope
+}
+
+export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Dependencies> = Layer.effect(
   VectorStore,
   Effect.gen(function*() {
     const runtime = yield* Effect.runtime()
+
     const settings = yield* Settings
     const config = yield* _PGVectorStoreConfig
     if (config.performSetup) {
-      yield* Pool.setupPgVectorExtension
       yield* DB.setupTables
     }
 
-    const pool = yield* Pool
     const db = yield* DB
 
     const add: IVectorStore['add'] = async (embeddingResults) =>
@@ -69,7 +71,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
     return {
       storesText: true,
       embedModel: settings.embedModel,
-      client: () => pool,
+      client: () => db,
       add,
       delete: _delete,
       query,
@@ -77,6 +79,5 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
   }),
 ).pipe(
   Layer.provide(DB.Live),
-  Layer.provide(Pool.Live),
   Layer.provide(_PGVectorStoreConfig.Live),
 )
