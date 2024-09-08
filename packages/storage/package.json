@@ -1,0 +1,68 @@
+{
+  "name": "@systemfsoftware/llama-index_storage",
+  "version": "0.0.0",
+  "type": "module",
+  "author": "Ryan Lee <ryanleecode@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/systemfsoftware/llama-index.git"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "@full-stack-effect/source": "./src/mod.ts",
+        "types": "./dist/esm/mod.d.ts",
+        "default": "./dist/esm/mod.js"
+      }
+    },
+    "./storage": {
+      "import": {
+        "@full-stack-effect/source": "./src/storage/mod.ts",
+        "types": "./dist/esm/storage/mod.d.ts",
+        "default": "./dist/esm/storage/mod.js"
+      }
+    }
+  },
+  "module": "./dist/esm/mod.js",
+  "keywords": [
+    "effect",
+    "llamaindex",
+    "ai",
+    "vector-store",
+    "typescript"
+  ],
+  "files": [
+    "dist"
+  ],
+  "tshy": {
+    "dialects": [
+      "esm"
+    ],
+    "project": "./tsconfig.build.json",
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/mod.ts",
+      "./storage": "./src/storage/mod.ts"
+    },
+    "sourceDialects": [
+      "@full-stack-effect/source"
+    ]
+  },
+  "scripts": {
+    "prepare": "turbo build",
+    "clean": "rimraf dist .tshy .tshy-build",
+    "build": "pnpm run clean && tshy"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@systemfsoftware/llama-index_core": "workspace:^",
+    "effect": "^3.7.2",
+    "llamaindex": "^0.5.21"
+  },
+  "peerDependencies": {
+    "@systemfsoftware/llama-index_core": "^0.0",
+    "llamaindex": "^0.5",
+    "effect": "^3.7"
+  }
+}
