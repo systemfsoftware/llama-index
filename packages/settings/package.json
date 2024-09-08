@@ -47,5 +47,13 @@
   "peerDependencies": {
     "llamaindex": "^0.5",
     "effect": "^3.7"
+  },
+  "peerDependenciesMeta": {
+    "llamaindex": {
+      "optional": false
+    },
+    "effect": {
+      "optional": false
+    }
   }
 }
