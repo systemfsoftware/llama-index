@@ -48,6 +48,15 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Depend
           const result = yield* Effect.tryPromise(() =>
             db.insertInto(`${config.schema}.${config.tableName}`)
               .values(values)
+              .onConflict((oc) =>
+                oc
+                  .column('node_id')
+                  .doUpdateSet({
+                    text: (eb) => eb.ref('excluded.text'),
+                    metadata_: (eb) => eb.ref('excluded.metadata_'),
+                    embedding: (eb) => eb.ref('excluded.embedding'),
+                  })
+              )
               .returning('id')
               .execute()
               .then((rows) => rows.map(({ id }) => `${id}`))
