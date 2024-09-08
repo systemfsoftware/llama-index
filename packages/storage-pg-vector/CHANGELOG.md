@@ -1,5 +1,12 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.6
+
+### Patch Changes
+
+- 4f2892c: chore: freeze PGVectorStore
+- fc0b14e: client now returns a KyselyDatabase
+
 ## 0.0.5
 
 ### Patch Changes
