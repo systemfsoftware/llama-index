@@ -64,22 +64,5 @@
     "llamaindex": "^0.5.21",
     "effect": "^3.7",
     "pg": "^8.1"
-  },
-  "peerDependenciesMeta": {
-    "@systemfsoftware/llama-index_core": {
-      "optional": false
-    },
-    "@systemfsoftware/llama-index_settings": {
-      "optional": false
-    },
-    "@systemfsoftware/llama-index_storage": {
-      "optional": false
-    },
-    "pg": {
-      "optional": false
-    },
-    "effect": {
-      "optional": false
-    }
   }
 }

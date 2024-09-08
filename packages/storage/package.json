@@ -62,16 +62,5 @@
   "peerDependencies": {
     "llamaindex": "^0.5",
     "effect": "^3.7"
-  },
-  "peerDependenciesMeta": {
-    "@systemfsoftware/llama-index_core": {
-      "optional": false
-    },
-    "llamaindex": {
-      "optional": false
-    },
-    "effect": {
-      "optional": false
-    }
   }
 }
