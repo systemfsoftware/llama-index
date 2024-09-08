@@ -1,5 +1,5 @@
-import { Settings } from '@systemfsoftware/llama-index-settings'
-import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index-storage'
+import { Settings } from '@systemfsoftware/llama-index_settings'
+import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index_storage'
 import { Array, Effect, Exit, Layer, pipe, Runtime } from 'effect'
 import type { Scope } from 'effect/Scope'
 import pg from 'pg'
