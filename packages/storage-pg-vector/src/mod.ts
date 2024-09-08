@@ -1,8 +1,10 @@
+import { Document } from '@systemfsoftware/llama-index_core/schema'
 import { Settings } from '@systemfsoftware/llama-index_settings'
 import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index_storage'
 import { Array, Effect, Exit, Layer, pipe, Runtime } from 'effect'
 import type { Scope } from 'effect/Scope'
 import pg from 'pg'
+import pgvector from 'pgvector/kysely'
 import { _PGVectorStoreConfig, type IPGVectorStoreConfig, PGVectorStoreConfig } from './config.js'
 import { DB, type NewEmbedding } from './database.js'
 
@@ -65,9 +67,50 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Depend
       throw new Error('not implemented')
     }
 
-    const query: IVectorStore['query'] = async () => {
-      throw new Error('not implemented')
-    }
+    const query: IVectorStore['query'] = async (query) =>
+      pipe(
+        Effect.gen(function*() {
+          const embedding = query.queryEmbedding ?? []
+          const max = query.similarityTopK ?? 2
+
+          const rows = yield* Effect.tryPromise(() =>
+            db.selectFrom(`${config.schema}.${config.tableName}`)
+              .selectAll()
+              .select((eb) =>
+                eb
+                  .cast<number>(
+                    pgvector
+                      .cosineDistance('embedding', embedding),
+                    'double precision',
+                  )
+                  .as('s')
+              )
+              .orderBy('s')
+              .limit(max)
+              .execute()
+          )
+
+          const result = yield* Effect.sync(() => ({
+            nodes: Array.map(rows, (row) =>
+              new Document({
+                id_: row.node_id,
+                text: row.text,
+                metadata: row.metadata_,
+                embedding: row.embedding,
+              })),
+            similarities: Array.map(rows, (row) => 1 - row.s),
+            ids: Array.map(rows, (row) => row.node_id),
+          }))
+
+          return result
+        }),
+        Runtime.runPromiseExit(runtime),
+      ).then(
+        Exit.match({
+          onFailure: Promise.reject,
+          onSuccess: (x) => Promise.resolve(x),
+        }),
+      )
 
     return Object.freeze({
       storesText: true,

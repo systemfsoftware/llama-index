@@ -79,6 +79,9 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0
     devDependencies:
+      '@systemfsoftware/llama-index_core':
+        specifier: workspace:^
+        version: link:../core
       '@systemfsoftware/llama-index_settings':
         specifier: workspace:^
         version: link:../settings
