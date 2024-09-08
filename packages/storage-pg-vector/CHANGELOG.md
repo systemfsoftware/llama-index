@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.4
+
+### Patch Changes
+
+- 541d243: fix: missing Settings type export
+
 ## 0.0.3
 
 ### Patch Changes
