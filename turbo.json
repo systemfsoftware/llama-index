@@ -13,14 +13,6 @@
       "dependsOn": ["build"],
       "inputs": ["dist/**"],
       "outputs": ["package.tgz"]
-    },
-    "test": {
-      "dependsOn": ["build"],
-      "inputs": [
-        "tests/**/*.test.ts",
-        "tests/**/*.test.cjs",
-        "tests/**/*.test.mjs"
-      ]
     }
   }
 }
