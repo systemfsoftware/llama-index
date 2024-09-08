@@ -19,7 +19,7 @@ export interface EmbeddingsTable {
   node_id: string
   text: string
   metadata_: Record<string, string>
-  embedding: unknown
+  embedding: number[]
 }
 
 /**

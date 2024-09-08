@@ -39,6 +39,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Depend
               node_id: embedding.id_,
               text: embedding.getContent(config.metadataMode),
               metadata_: embedding.metadata,
+              embedding: embedding.getEmbedding(),
             }),
           )
 
