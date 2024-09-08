@@ -51,33 +51,8 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@22.5.4)
 
-  packages/core:
-    dependencies:
-      llamaindex:
-        specifier: ^0.5
-        version: 0.5.21(@aws-sdk/client-sso-oidc@3.645.0(@aws-sdk/client-sts@3.645.0))(@aws-sdk/credential-providers@3.645.0(@aws-sdk/client-sso-oidc@3.645.0(@aws-sdk/client-sts@3.645.0)))(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(typescript@5.6.0-beta)
-    devDependencies:
-      '@llamaindex/core':
-        specifier: ^0.1.10
-        version: 0.1.10(@aws-crypto/sha256-js@5.2.0)(js-tiktoken@1.0.14)(pathe@1.1.2)(tiktoken@1.0.14)
-      effect:
-        specifier: ^3.7.2
-        version: 3.7.2
-
-  packages/settings:
-    devDependencies:
-      effect:
-        specifier: ^3.7.2
-        version: 3.7.2
-      llamaindex:
-        specifier: ^0.5.21
-        version: 0.5.21(@aws-sdk/client-sso-oidc@3.645.0(@aws-sdk/client-sts@3.645.0))(@aws-sdk/credential-providers@3.645.0(@aws-sdk/client-sso-oidc@3.645.0(@aws-sdk/client-sts@3.645.0)))(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(typescript@5.6.0-beta)
-
   packages/storage:
     devDependencies:
-      '@systemfsoftware/llama-index_core':
-        specifier: workspace:^
-        version: link:../core
       effect:
         specifier: ^3.7.2
         version: 3.7.2
@@ -94,12 +69,6 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0
     devDependencies:
-      '@systemfsoftware/llama-index_core':
-        specifier: workspace:^
-        version: link:../core
-      '@systemfsoftware/llama-index_settings':
-        specifier: workspace:^
-        version: link:../settings
       '@systemfsoftware/llama-index_storage':
         specifier: workspace:^
         version: link:../storage

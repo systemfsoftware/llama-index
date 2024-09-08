@@ -1,5 +1,5 @@
-import { MetadataMode } from '@systemfsoftware/llama-index_storage'
 import { Context, Effect, Layer, Match } from 'effect'
+import { MetadataMode } from 'llamaindex'
 import pg from 'pg'
 
 export type PoolConfig = pg.PoolConfig

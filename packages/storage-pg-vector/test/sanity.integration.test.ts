@@ -1,10 +1,9 @@
 import { IntegreSQLClient } from '@devoxa/integresql-client'
 import { it } from '@effect/vitest'
-import { Settings as LLamaSettings } from '@systemfsoftware/llama-index_settings'
 import { VectorStore } from '@systemfsoftware/llama-index_storage'
 import { PGVectorStore, PGVectorStoreConfig } from '@systemfsoftware/llama-index_storage-pg-vector'
-import { Effect, pipe } from 'effect'
-import { OpenAIEmbedding } from 'llamaindex'
+import { Effect, Layer, pipe } from 'effect'
+import { OpenAI, OpenAIEmbedding, Settings } from 'llamaindex'
 import { beforeAll, beforeEach, describe } from 'vitest'
 
 describe('sanity test', () => {
@@ -39,20 +38,17 @@ describe('sanity test', () => {
           }
         }),
       ),
-      Effect.provideServiceEffect(
-        LLamaSettings,
-        Effect.gen(function*() {
-          const settings = yield* LLamaSettings
+      Effect.provide(
+        Layer.effectDiscard(
+          Effect.gen(function*() {
+            yield* Effect.sync(() => {
+              Settings.llm = new OpenAI({ model: 'gpt-3.5-turbo' })
 
-          yield* Effect.sync(() => {
-            settings.embedModel = new OpenAIEmbedding({
-              model: 'text-embedding-3-small',
+              Settings.embedModel = new OpenAIEmbedding({
+                model: 'text-embedding-3-small',
+              })
             })
-          })
-
-          return settings
-        }).pipe(
-          Effect.provide(LLamaSettings.Live),
+          }),
         ),
       ),
     ))

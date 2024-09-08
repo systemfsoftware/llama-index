@@ -43,7 +43,7 @@
     ]
   },
   "scripts": {
-    "prepare": "turbo build",
+    "prepare": "pnpm turbo build",
     "clean": "rimraf dist .tshy .tshy-build",
     "build": "pnpm run clean && tshy",
     "test": "vitest"
@@ -53,8 +53,6 @@
     "pgvector": "^0.2.0"
   },
   "devDependencies": {
-    "@systemfsoftware/llama-index_core": "workspace:^",
-    "@systemfsoftware/llama-index_settings": "workspace:^",
     "@systemfsoftware/llama-index_storage": "workspace:^",
     "@types/pg": "^8.11.8",
     "effect": "^3.7.2",
@@ -62,9 +60,8 @@
     "pg": "^8.12.0"
   },
   "peerDependencies": {
-    "@systemfsoftware/llama-index_core": "^0.0.2",
-    "@systemfsoftware/llama-index_settings": "^0.0.2",
     "@systemfsoftware/llama-index_storage": "^0.0.2",
+    "llamaindex": "^0.5.21",
     "effect": "^3.7",
     "pg": "^8.1"
   },

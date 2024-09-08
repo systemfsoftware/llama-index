@@ -1,8 +1,7 @@
-import { Document } from '@systemfsoftware/llama-index_core/schema'
-import { Settings } from '@systemfsoftware/llama-index_settings'
 import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index_storage'
 import { Array, Cause, Effect, Exit, Layer, pipe, Runtime } from 'effect'
 import type { Scope } from 'effect/Scope'
+import { Document, Settings } from 'llamaindex'
 import pg from 'pg'
 import pgvector from 'pgvector/kysely'
 import { _PGVectorStoreConfig, type IPGVectorStoreConfig, PGVectorStoreConfig } from './config.js'
@@ -12,15 +11,15 @@ export type PoolConfig = pg.PoolConfig
 export { type IPGVectorStoreConfig, PGVectorStoreConfig, Settings }
 
 export namespace PGVectorStore {
-  export type Dependencies = PGVectorStoreConfig | Settings | Scope
+  export type Dependencies = PGVectorStoreConfig | Scope
 }
 
-export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Dependencies> = Layer.effect(
+export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig | Scope> = Layer.effect(
   VectorStore,
   Effect.gen(function*() {
     const runtime = yield* Effect.runtime()
 
-    const settings = yield* Settings
+    const settings = yield* Effect.sync(() => Settings)
     const config = yield* _PGVectorStoreConfig
     if (config.performSetup) {
       yield* DB.setupTables

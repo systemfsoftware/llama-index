@@ -50,18 +50,16 @@
     ]
   },
   "scripts": {
-    "prepare": "turbo build",
+    "prepare": "pnpm turbo build",
     "clean": "rimraf dist .tshy .tshy-build",
     "build": "pnpm run clean && tshy"
   },
   "dependencies": {},
   "devDependencies": {
-    "@systemfsoftware/llama-index_core": "workspace:^",
     "effect": "^3.7.2",
     "llamaindex": "^0.5.21"
   },
   "peerDependencies": {
-    "@systemfsoftware/llama-index_core": "^0.0.2",
     "llamaindex": "^0.5",
     "effect": "^3.7"
   },
