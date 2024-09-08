@@ -8,7 +8,7 @@ import { DB, type NewEmbedding } from './database.js'
 import { Pool } from './pool.js'
 
 export type PoolConfig = pg.PoolConfig
-export { type IPGVectorStoreConfig, PGVectorStoreConfig }
+export { type IPGVectorStoreConfig, PGVectorStoreConfig, Settings }
 
 export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig | Settings | Scope> = Layer.effect(
   VectorStore,
