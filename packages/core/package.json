@@ -62,5 +62,13 @@
   "peerDependencies": {
     "llamaindex": "^0.5",
     "@llamaindex/core": "^0.1"
+  },
+  "peerDependenciesMeta": {
+    "llamaindex": {
+      "optional": false
+    },
+    "@llamaindex/core": {
+      "optional": false
+    }
   }
 }
