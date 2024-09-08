@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage
 
+## 0.0.4
+
+### Patch Changes
+
+- 25ce63d: fix: remove peer dependencies meta since they are on my default
+
 ## 0.0.3
 
 ### Patch Changes

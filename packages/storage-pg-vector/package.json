@@ -1,6 +1,6 @@
 {
   "name": "@systemfsoftware/llama-index_storage-pg-vector",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "author": "Ryan Lee <ryanleecode@gmail.com>",
   "repository": {
@@ -60,7 +60,7 @@
     "pg": "^8.12.0"
   },
   "peerDependencies": {
-    "@systemfsoftware/llama-index_storage": "^0.0.3",
+    "@systemfsoftware/llama-index_storage": "^0.0.4",
     "llamaindex": "^0.5.21",
     "effect": "^3.7",
     "pg": "^8.1"

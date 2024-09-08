@@ -1,5 +1,13 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.9
+
+### Patch Changes
+
+- 25ce63d: fix: remove peer dependencies meta since they are on my default
+- Updated dependencies [25ce63d]
+  - @systemfsoftware/llama-index_storage@0.0.4
+
 ## 0.0.8
 
 ### Patch Changes
