@@ -2,7 +2,7 @@ import { Schema as S } from '@effect/schema'
 import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index_storage'
 import { Array, Cause, Effect, Exit, Layer, pipe, Runtime } from 'effect'
 import type { Scope } from 'effect/Scope'
-import { Document, Settings } from 'llamaindex'
+import { Settings, TextNode } from 'llamaindex'
 import pg from 'pg'
 import pgvector from 'pgvector/kysely'
 import { _PGVectorStoreConfig, type IPGVectorStoreConfig, PGVectorStoreConfig } from './config.js'
@@ -106,7 +106,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
 
           const result = yield* Effect.promise(async () => ({
             nodes: await Promise.all(Array.map(rows, async (row) =>
-              new Document({
+              new TextNode({
                 id_: row.node_id,
                 text: row.text,
                 metadata: row.metadata_,
