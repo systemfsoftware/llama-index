@@ -29,6 +29,9 @@
   "pnpm": {
     "overrides": {
       "vite": "5.4.3"
+    },
+    "patchedDependencies": {
+      "pgvector@0.2.0": "patches/pgvector@0.2.0.patch"
     }
   }
 }

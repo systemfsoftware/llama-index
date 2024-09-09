@@ -1,0 +1,12 @@
+diff --git a/types/utils/index.d.ts b/types/utils/index.d.ts
+index 4d610ad51fa827b2025a91da1f196d5994d7d29b..c51f23220a753c4cefd788184a3714dddc147dcf 100644
+--- a/types/utils/index.d.ts
++++ b/types/utils/index.d.ts
+@@ -1,5 +1,5 @@
+-export function fromSql(value: any): any;
+-export function toSql(value: any): any;
++export function fromSql(value: unknown): unknown;
++export function toSql(value: unknown): unknown;
+ export function vectorFromSql(value: any): any;
+ export function vectorToSql(value: any): any;
+ export function halfvecFromSql(value: any): any;

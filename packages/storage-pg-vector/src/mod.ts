@@ -1,3 +1,4 @@
+import { Schema as S } from '@effect/schema'
 import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index_storage'
 import { Array, Cause, Effect, Exit, Layer, pipe, Runtime } from 'effect'
 import type { Scope } from 'effect/Scope'
@@ -34,14 +35,19 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
             return []
           }
 
-          const values: NewEmbedding[] = Array.map(
-            embeddingResults,
-            (embedding) => ({
-              node_id: embedding.id_,
-              text: embedding.getContent(config.metadataMode),
-              metadata_: embedding.metadata,
-              embedding: pgvector.toSql(embedding.getEmbedding()),
-            }),
+          const values: NewEmbedding[] = yield* Effect.promise(() =>
+            Promise.all(Array.map(
+              embeddingResults,
+              async (embedding) => ({
+                node_id: embedding.id_,
+                text: embedding.getContent(config.metadataMode),
+                metadata_: embedding.metadata,
+                embedding: await pipe(
+                  pgvector.toSql(embedding.getEmbedding()),
+                  S.decodeUnknownPromise(S.String),
+                ),
+              }),
+            ))
           )
 
           const result = yield* Effect.tryPromise(() =>
@@ -98,14 +104,17 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
               .execute()
           )
 
-          const result = yield* Effect.sync(() => ({
-            nodes: Array.map(rows, (row) =>
+          const result = yield* Effect.promise(async () => ({
+            nodes: await Promise.all(Array.map(rows, async (row) =>
               new Document({
                 id_: row.node_id,
                 text: row.text,
                 metadata: row.metadata_,
-                embedding: row.embedding,
-              })),
+                embedding: await pipe(
+                  pgvector.fromSql(row.embedding),
+                  S.decodeUnknownPromise(S.mutable(S.Array(S.Number))),
+                ),
+              }))),
             similarities: Array.map(rows, (row) => 1 - row.s),
             ids: Array.map(rows, (row) => row.node_id),
           }))
