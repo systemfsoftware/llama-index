@@ -110,6 +110,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
                 id_: row.node_id,
                 text: row.text,
                 metadata: row.metadata_,
+                textTemplate: '{metadata_str}\n\n{content}',
                 embedding: await pipe(
                   pgvector.fromSql(row.embedding),
                   S.decodeUnknownPromise(S.mutable(S.Array(S.Number))),
