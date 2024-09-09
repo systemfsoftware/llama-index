@@ -1,6 +1,6 @@
 {
   "name": "@systemfsoftware/llama-index_storage-pg-vector",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "type": "module",
   "author": "Ryan Lee <ryanleecode@gmail.com>",
   "repository": {

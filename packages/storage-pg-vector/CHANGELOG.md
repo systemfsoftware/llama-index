@@ -1,5 +1,13 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.12
+
+### Patch Changes
+
+- 282d0c3: fix(storage-pg-vector): empty text template
+
+  text template defaulting to empty string is a bug. It should match whats in the python version which is `{metadata_str}\n\n{content}`.
+
 ## 0.0.11
 
 ### Patch Changes
