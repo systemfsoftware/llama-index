@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.11
+
+### Patch Changes
+
+- 83aff7c: fix: Document -> TextNode
+
 ## 0.0.10
 
 ### Patch Changes
