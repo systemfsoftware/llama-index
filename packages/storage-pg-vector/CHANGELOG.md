@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.0.10
+
+### Patch Changes
+
+- 298d966: fix: query row embedding decoding
+
 ## 0.0.9
 
 ### Patch Changes
