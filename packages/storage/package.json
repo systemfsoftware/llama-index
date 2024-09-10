@@ -15,13 +15,6 @@
         "types": "./dist/esm/mod.d.ts",
         "default": "./dist/esm/mod.js"
       }
-    },
-    "./storage": {
-      "import": {
-        "@full-stack-effect/source": "./src/storage/mod.ts",
-        "types": "./dist/esm/storage/mod.d.ts",
-        "default": "./dist/esm/storage/mod.js"
-      }
     }
   },
   "module": "./dist/esm/mod.js",
@@ -42,8 +35,7 @@
     "project": "./tsconfig.build.json",
     "exports": {
       "./package.json": "./package.json",
-      ".": "./src/mod.ts",
-      "./storage": "./src/storage/mod.ts"
+      ".": "./src/mod.ts"
     },
     "sourceDialects": [
       "@full-stack-effect/source"
