@@ -11,7 +11,7 @@
     "./package.json": "./package.json",
     ".": {
       "import": {
-        "@full-stack-effect/source": "./src/mod.ts",
+        "@systemfsoftware/source": "./src/mod.ts",
         "types": "./dist/esm/mod.d.ts",
         "default": "./dist/esm/mod.js"
       }
@@ -38,7 +38,7 @@
       ".": "./src/mod.ts"
     },
     "sourceDialects": [
-      "@full-stack-effect/source"
+      "@systemfsoftware/source"
     ]
   },
   "scripts": {
