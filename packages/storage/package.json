@@ -49,10 +49,10 @@
   "dependencies": {},
   "devDependencies": {
     "effect": "^3.7.2",
-    "llamaindex": "^0.6.0"
+    "llamaindex": "^0.6.5"
   },
   "peerDependencies": {
-    "llamaindex": "^0.6",
+    "llamaindex": "^0.6.5",
     "effect": "^3.7"
   }
 }
