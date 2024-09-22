@@ -1,5 +1,13 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.1.1
+
+### Patch Changes
+
+- f357a4e: chore: update llamaindex
+- Updated dependencies [f357a4e]
+  - @systemfsoftware/llama-index_storage@0.1.1
+
 ## 1.0.0
 
 ### Minor Changes

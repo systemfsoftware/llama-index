@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage
 
+## 0.1.1
+
+### Patch Changes
+
+- f357a4e: chore: update llamaindex
+
 ## 0.1.0
 
 ### Minor Changes
