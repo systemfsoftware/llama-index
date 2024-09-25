@@ -88,5 +88,13 @@ export class DB extends Context.Tag('llama-index_storage-pg-vector/DB')<DB, Kyse
           ON ${rawSchema}.${rawTableName} (node_id);
       `.execute(db)
     )
+
+    yield* Effect.promise(() =>
+      db.schema.createIndex(`${tableName}_embedding_idx`)
+        .on(tableName)
+        .using('hnsw')
+        .expression(sql`embedding vector_cosine_ops`)
+        .execute()
+    )
   })
 }
