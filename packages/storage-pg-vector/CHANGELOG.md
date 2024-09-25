@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.2.1
+
+### Patch Changes
+
+- 8909a16: fix: hnsw index
+
 ## 0.2.0
 
 ### Minor Changes
