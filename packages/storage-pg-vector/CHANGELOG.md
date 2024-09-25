@@ -1,5 +1,17 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.2.0
+
+### Minor Changes
+
+- 652464c: feat: hnsw indexing
+
+### Patch Changes
+
+- b3ab28c: chore: update llamaindex
+- Updated dependencies [b3ab28c]
+  - @systemfsoftware/llama-index_storage@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes
