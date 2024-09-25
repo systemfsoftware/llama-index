@@ -57,14 +57,14 @@
     "@types/pg": "^8.11.8",
     "effect": "^3.7.2",
     "@effect/schema": "^0.72.3",
-    "llamaindex": "^0.6.5",
+    "llamaindex": "^0.6.9",
     "pg": "^8.12.0"
   },
   "peerDependencies": {
     "@systemfsoftware/llama-index_storage": "^0.1.1",
     "effect": "^3.7",
     "@effect/schema": "^0.72",
-    "llamaindex": "^0.6.5",
+    "llamaindex": "^0.6.9",
     "pg": "^8.1"
   }
 }
