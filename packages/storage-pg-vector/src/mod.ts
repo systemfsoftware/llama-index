@@ -1,7 +1,6 @@
 import { Schema as S } from '@effect/schema'
 import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index_storage'
 import { Array, Cause, Effect, Exit, Layer, pipe, Runtime } from 'effect'
-import type { Scope } from 'effect/Scope'
 import { sql } from 'kysely'
 import { Settings, TextNode, VectorStoreQueryMode } from 'llamaindex'
 import pg from 'pg'
@@ -13,10 +12,10 @@ export type PoolConfig = pg.PoolConfig
 export { type IPGVectorStoreConfig, type IVectorStore, PGVectorStoreConfig, Settings, VectorStore }
 
 export namespace PGVectorStore {
-  export type Dependencies = PGVectorStoreConfig | Scope
+  export type Dependencies = PGVectorStoreConfig
 }
 
-export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig | Scope> = Layer.effect(
+export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Dependencies> = Layer.effect(
   VectorStore,
   Effect.gen(function*() {
     const runtime = yield* Effect.runtime()
