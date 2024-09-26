@@ -10,7 +10,8 @@ import {
   Settings,
   VectorStoreIndex,
 } from 'llamaindex'
-import { beforeAll, beforeEach, describe, expect } from 'vitest'
+import pg from 'pg'
+import { afterEach, beforeAll, beforeEach, describe, expect } from 'vitest'
 import { PGVectorStore, PGVectorStoreConfig } from '../src/mod.js'
 import { documents } from './__fixtures__/documents.js'
 
@@ -18,6 +19,7 @@ describe('sanity test', () => {
   const integreSQL = new IntegreSQLClient({ url: 'http://localhost:5000' })
   let hash: string
   let connectionString: string
+  let pool: pg.Pool
 
   beforeAll(async () => {
     hash = await integreSQL.hashFiles([
@@ -30,6 +32,13 @@ describe('sanity test', () => {
   beforeEach(async () => {
     const databaseConfig = await integreSQL.getTestDatabase(hash)
     connectionString = integreSQL.databaseConfigToConnectionUrl(databaseConfig)
+    pool = new pg.Pool({
+      connectionString,
+    })
+  })
+
+  afterEach(async () => {
+    await pool.end()
   })
 
   it.scoped('works', () =>
@@ -72,13 +81,7 @@ describe('sanity test', () => {
       Effect.provide(PGVectorStore),
       Effect.provideServiceEffect(
         PGVectorStoreConfig,
-        Effect.gen(function*() {
-          return {
-            poolConfig: {
-              connectionString,
-            },
-          }
-        }),
+        Effect.succeed({ pool }),
       ),
       Effect.provide(
         Layer.effectDiscard(
