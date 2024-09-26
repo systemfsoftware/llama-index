@@ -2,7 +2,8 @@ import { Schema as S } from '@effect/schema'
 import { type IVectorStore, VectorStore } from '@systemfsoftware/llama-index_storage'
 import { Array, Cause, Effect, Exit, Layer, pipe, Runtime } from 'effect'
 import type { Scope } from 'effect/Scope'
-import { Settings, TextNode } from 'llamaindex'
+import { sql } from 'kysely'
+import { Settings, TextNode, VectorStoreQueryMode } from 'llamaindex'
 import pg from 'pg'
 import pgvector from 'pgvector/kysely'
 import { _PGVectorStoreConfig, type IPGVectorStoreConfig, PGVectorStoreConfig } from './config.js'
@@ -86,41 +87,82 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStoreConfig 
         Effect.gen(function*() {
           const embedding = query.queryEmbedding ?? []
           const max = query.similarityTopK ?? 2
+          const queryStr = query.queryStr ?? ''
+          const alpha = query.alpha ?? 0.5
+          const mode = VectorStoreQueryMode.HYBRID
 
-          const rows = yield* Effect.tryPromise(() =>
-            db.selectFrom(`${config.schema}.${config.tableName}`)
-              .selectAll()
-              .select((eb) =>
-                eb
-                  .cast<number>(
-                    pgvector
-                      .cosineDistance('embedding', embedding),
-                    'double precision',
-                  )
-                  .as('s')
-              )
-              .orderBy('s')
-              .limit(max)
-              .execute()
-          )
+          if (mode === VectorStoreQueryMode.HYBRID) {
+            const rows = yield* Effect.tryPromise(() =>
+              db.selectFrom(`${config.schema}.${config.tableName}`)
+                .selectAll()
+                .select((eb) =>
+                  sql`(${sql.raw(`${alpha}`)} * (1 - (embedding <=> ${
+                    sql.raw(
+                      `'[${embedding.join(',')}]'::vector(${config.dimensions})`,
+                    )
+                  })) + ${
+                    sql.raw(`${1 - alpha}`)
+                  } * ts_rank(to_tsvector('english', text), plainto_tsquery('english', ${queryStr})))`
+                    .as('score')
+                )
+                .orderBy('score', 'desc')
+                .limit(max)
+                .execute()
+            )
 
-          const result = yield* Effect.promise(async () => ({
-            nodes: await Promise.all(Array.map(rows, async (row) =>
-              new TextNode({
-                id_: row.node_id,
-                text: row.text,
-                metadata: row.metadata_,
-                textTemplate: '{metadata_str}\n\n{content}',
-                embedding: await pipe(
-                  pgvector.fromSql(row.embedding),
-                  S.decodeUnknownPromise(S.mutable(S.Array(S.Number))),
-                ),
-              }))),
-            similarities: Array.map(rows, (row) => 1 - row.s),
-            ids: Array.map(rows, (row) => row.node_id),
-          }))
+            const result = yield* Effect.promise(async () => ({
+              nodes: await Promise.all(Array.map(rows, async (row) =>
+                new TextNode({
+                  id_: row.node_id,
+                  text: row.text,
+                  metadata: row.metadata_,
+                  textTemplate: '{metadata_str}\n\n{content}',
+                  embedding: await pipe(
+                    pgvector.fromSql(row.embedding),
+                    S.decodeUnknownPromise(S.mutable(S.Array(S.Number))),
+                  ),
+                }))),
+              similarities: Array.map(rows, (row) => row.score as number),
+              ids: Array.map(rows, (row) => row.node_id),
+            }))
 
-          return result
+            return result
+          } else {
+            const rows = yield* Effect.tryPromise(() =>
+              db.selectFrom(`${config.schema}.${config.tableName}`)
+                .selectAll()
+                .select((eb) =>
+                  eb
+                    .cast<number>(
+                      pgvector
+                        .cosineDistance('embedding', embedding),
+                      'double precision',
+                    )
+                    .as('s')
+                )
+                .orderBy('s')
+                .limit(max)
+                .execute()
+            )
+
+            const result = yield* Effect.promise(async () => ({
+              nodes: await Promise.all(Array.map(rows, async (row) =>
+                new TextNode({
+                  id_: row.node_id,
+                  text: row.text,
+                  metadata: row.metadata_,
+                  textTemplate: '{metadata_str}\n\n{content}',
+                  embedding: await pipe(
+                    pgvector.fromSql(row.embedding),
+                    S.decodeUnknownPromise(S.mutable(S.Array(S.Number))),
+                  ),
+                }))),
+              similarities: Array.map(rows, (row) => 1 - row.s),
+              ids: Array.map(rows, (row) => row.node_id),
+            }))
+
+            return result
+          }
         }),
         Runtime.runPromiseExit(runtime),
       ).then(

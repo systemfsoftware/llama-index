@@ -97,5 +97,12 @@ export class DB extends Context.Tag('llama-index_storage-pg-vector/DB')<DB, Kyse
         .expression(sql`embedding vector_cosine_ops`)
         .execute()
     )
+
+    yield* Effect.promise(() =>
+      sql`
+        CREATE INDEX IF NOT EXISTS idx_${rawTableName}_text_search 
+          ON ${rawSchema}.${rawTableName} USING GIN (to_tsvector('english', text));
+      `.execute(db)
+    )
   })
 }

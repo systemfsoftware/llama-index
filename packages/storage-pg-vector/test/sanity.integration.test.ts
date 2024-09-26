@@ -3,8 +3,6 @@ import { it } from '@effect/vitest'
 import { VectorStore } from '@systemfsoftware/llama-index_storage'
 import { Effect, Layer, pipe } from 'effect'
 import {
-  ContextChatEngine,
-  Document,
   FaithfulnessEvaluator,
   IngestionPipeline,
   OpenAI,
@@ -53,7 +51,7 @@ describe('sanity test', () => {
         const queryEngine = yield* Effect.sync(() => index.asQueryEngine())
         const evaluator = yield* Effect.sync(() => new FaithfulnessEvaluator())
 
-        const query = 'What is SystemFSoftware?'
+        const query = 'functional programming in AI'
         const response = yield* Effect.tryPromise(() =>
           queryEngine.query({
             query,
