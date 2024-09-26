@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.4.0
+
+### Minor Changes
+
+- breaking: require a pg.pool in the config so that it can be optimized for serverless environments
+
 ## 0.3.0
 
 ### Minor Changes
