@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.3.0
+
+### Minor Changes
+
+- 8253508: feat: hybrid search
+
 ## 0.2.1
 
 ### Patch Changes
