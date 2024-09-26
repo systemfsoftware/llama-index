@@ -43,18 +43,8 @@ export class DB extends Context.Tag('llama-index_storage-pg-vector/DB')<DB, Kyse
     Effect.gen(function*() {
       const config = yield* _PGVectorStoreConfig
 
-      const db = yield* Effect.acquireRelease(
-        pipe(
-          Effect.sync(() => new PostgresDialect({ pool: config.pool })),
-          Effect.andThen((dialect) => Effect.sync(() => new Kysely<Database>({ dialect }))),
-        ),
-        (db) =>
-          pipe(
-            Effect.tryPromise(() => db.destroy()),
-            Effect.retry({ times: 2 }),
-            Effect.catchAll(() => Effect.void),
-          ),
-      )
+      const dialect = yield* Effect.sync(() => new PostgresDialect({ pool: config.pool }))
+      const db = new Kysely<Database>({ dialect })
 
       return db
     }),
