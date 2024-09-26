@@ -5,7 +5,7 @@ import pg from 'pg'
 export type PoolConfig = pg.PoolConfig
 
 export type IPGVectorStoreConfig = {
-  poolConfig?: PoolConfig
+  pool: pg.Pool
   /**
    * @default "public"
    */
@@ -48,7 +48,7 @@ export class _PGVectorStoreConfig extends Context.Tag('llama-index_storage-pg-ve
       const config = yield* PGVectorStoreConfig
 
       return {
-        poolConfig: config.poolConfig,
+        pool: config.pool,
         schema: config.schema ?? 'public',
         tableName: config.tableName ?? 'data_llamaindex_embedding',
         dimensions: config.dimensions ?? '1536',

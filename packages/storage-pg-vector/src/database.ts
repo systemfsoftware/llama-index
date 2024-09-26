@@ -1,7 +1,6 @@
 import { Context, Effect, Layer, pipe } from 'effect'
 import { Kysely, PostgresDialect, sql } from 'kysely'
 import type { Generated, Insertable, Selectable, Updateable } from 'kysely'
-import pg from 'pg'
 import { _PGVectorStoreConfig } from './config.js'
 
 /**
@@ -46,7 +45,7 @@ export class DB extends Context.Tag('llama-index_storage-pg-vector/DB')<DB, Kyse
 
       const db = yield* Effect.acquireRelease(
         pipe(
-          Effect.sync(() => new PostgresDialect({ pool: new pg.Pool(config.poolConfig) })),
+          Effect.sync(() => new PostgresDialect({ pool: config.pool })),
           Effect.andThen((dialect) => Effect.sync(() => new Kysely<Database>({ dialect }))),
         ),
         (db) =>
