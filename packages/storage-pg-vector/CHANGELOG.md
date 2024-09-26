@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.4.1
+
+### Patch Changes
+
+- b6c2fea: fix: do not destroy db
+
 ## 0.4.0
 
 ### Minor Changes
