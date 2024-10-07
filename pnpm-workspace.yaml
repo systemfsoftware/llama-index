@@ -1,2 +1,7 @@
 packages:
   - packages/*
+
+catalog:
+  "effect": "3.9.0"
+  "@effect/schema": "0.75.0"
+  "llamaindex": "^0.6.16"

@@ -46,13 +46,12 @@
     "clean": "rimraf dist .tshy .tshy-build",
     "build": "pnpm run clean && tshy"
   },
-  "dependencies": {},
   "devDependencies": {
-    "effect": "^3.7.2",
-    "llamaindex": "^0.6.9"
+    "effect": "catalog:",
+    "llamaindex": "catalog:"
   },
   "peerDependencies": {
-    "llamaindex": "^0.6.9",
-    "effect": "^3.7"
+    "effect": "catalog:",
+    "llamaindex": "catalog:"
   }
 }
