@@ -1,5 +1,18 @@
 # @systemfsoftware/llama-index_storage-pg-vector
 
+## 0.5.0
+
+### Minor Changes
+
+- 788a7b9: feat: improve hybrid search with Reciprocal Rank Fusion (RRF)
+  Implementation ripped from https://raw.githubusercontent.com/neondatabase/examples/refs/heads/main/ai/hybrid-search-nextjs/app/api/learn/route.ts.
+- 3e744c6: chore: update dependencies
+
+### Patch Changes
+
+- Updated dependencies [3e744c6]
+  - @systemfsoftware/llama-index_storage@0.2.0
+
 ## 0.4.1
 
 ### Patch Changes

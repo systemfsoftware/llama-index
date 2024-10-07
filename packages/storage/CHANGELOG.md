@@ -1,5 +1,11 @@
 # @systemfsoftware/llama-index_storage
 
+## 0.2.0
+
+### Minor Changes
+
+- 3e744c6: chore: update dependencies
+
 ## 0.1.2
 
 ### Patch Changes
