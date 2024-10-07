@@ -91,23 +91,14 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Depend
           const mode = VectorStoreQueryMode.HYBRID
 
           if (mode === VectorStoreQueryMode.HYBRID) {
-            const rows = yield* Effect.tryPromise(() =>
-              db.selectFrom(`${config.schema}.${config.tableName}`)
+            const rows = yield* Effect.tryPromise(() => {
+              const queryEmbedding = sql.raw(`'[${embedding.join(',')}]'::vector(${config.dimensions})`)
+              return db.selectFrom(
+                sql`hybrid_search(${queryStr}, ${queryEmbedding}, ${max}, ${alpha}, ${1 - alpha})`.as('hybrid_search'),
+              )
                 .selectAll()
-                .select((eb) =>
-                  sql`(${sql.raw(`${alpha}`)} * (1 - (embedding <=> ${
-                    sql.raw(
-                      `'[${embedding.join(',')}]'::vector(${config.dimensions})`,
-                    )
-                  })) + ${
-                    sql.raw(`${1 - alpha}`)
-                  } * ts_rank(to_tsvector('english', text), plainto_tsquery('english', ${queryStr})))`
-                    .as('score')
-                )
-                .orderBy('score', 'desc')
-                .limit(max)
                 .execute()
-            )
+            })
 
             const result = yield* Effect.promise(async () => ({
               nodes: await Promise.all(Array.map(rows, async (row) =>
@@ -121,7 +112,7 @@ export const PGVectorStore: Layer.Layer<VectorStore, never, PGVectorStore.Depend
                     S.decodeUnknownPromise(S.mutable(S.Array(S.Number))),
                   ),
                 }))),
-              similarities: Array.map(rows, (row) => row.score as number),
+              similarities: Array.map(rows, (row) => (row as any).score as number),
               ids: Array.map(rows, (row) => row.node_id),
             }))
 

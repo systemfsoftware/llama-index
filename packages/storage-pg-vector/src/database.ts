@@ -93,5 +93,56 @@ export class DB extends Context.Tag('llama-index_storage-pg-vector/DB')<DB, Kyse
           ON ${rawSchema}.${rawTableName} USING GIN (to_tsvector('english', text));
       `.execute(db)
     )
+
+    yield* Effect.promise(() =>
+      sql`
+        CREATE OR REPLACE FUNCTION hybrid_search(
+          query_text TEXT,
+          query_embedding VECTOR(${sql.raw(dimensions)}),
+          match_count INT,
+          full_text_weight FLOAT = 1,
+          semantic_weight FLOAT = 1,
+          rrf_k INT = 50
+        ) RETURNS TABLE (
+          id INT,
+          node_id VARCHAR,
+          text VARCHAR,
+          metadata_ JSONB,
+          embedding VECTOR(${sql.raw(dimensions)}),
+          score FLOAT
+        ) 
+        LANGUAGE SQL
+        AS $$
+          WITH full_text AS (
+            SELECT id,
+              ROW_NUMBER() OVER(ORDER BY ts_rank_cd(to_tsvector('english', text), websearch_to_tsquery('english', query_text)) DESC) AS rank_ix
+            FROM ${rawSchema}.${rawTableName}
+            WHERE to_tsvector('english', text) @@ websearch_to_tsquery('english', query_text)
+            ORDER BY rank_ix
+            LIMIT GREATEST(match_count, 30) * 2
+          ),
+          semantic AS (
+            SELECT id,
+              ROW_NUMBER() OVER (ORDER BY 1 - (embedding <=> query_embedding)) AS rank_ix
+            FROM ${rawSchema}.${rawTableName}
+            ORDER BY rank_ix
+            LIMIT GREATEST(match_count, 30) * 2
+          )
+          SELECT 
+            ${rawTableName}.id,
+            ${rawTableName}.node_id,
+            ${rawTableName}.text,
+            ${rawTableName}.metadata_,
+            ${rawTableName}.embedding,
+            COALESCE(1.0 / (rrf_k + full_text.rank_ix), 0.0) * full_text_weight + 
+            COALESCE(1.0 / (rrf_k + semantic.rank_ix), 0.0) * semantic_weight AS score
+          FROM full_text
+          FULL OUTER JOIN semantic ON full_text.id = semantic.id
+          JOIN ${rawSchema}.${rawTableName} ON COALESCE(full_text.id, semantic.id) = ${rawTableName}.id
+          ORDER BY score DESC
+          LIMIT GREATEST(match_count, 30)
+        $$;
+      `.execute(db)
+    )
   })
 }
